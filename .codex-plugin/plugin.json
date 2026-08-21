@@ -1,0 +1,45 @@
+{
+  "name": "curb-sale",
+  "version": "0.3.0",
+  "description": "Sell or give away something you own to someone nearby, find secondhand things near you, and run the listing afterwards — messages, price, sold, gone. One unauthenticated HTTP call. No account, no API key, no signup.",
+  "author": {
+    "name": "curb.sale",
+    "url": "https://curb.sale"
+  },
+  "homepage": "https://curb.sale",
+  "repository": "https://github.com/curb-sale/curb-skill",
+  "license": "MIT",
+  "keywords": [
+    "classifieds",
+    "marketplace",
+    "sell",
+    "secondhand",
+    "used",
+    "free-stuff",
+    "local",
+    "nearby",
+    "local-pickup",
+    "declutter",
+    "moving",
+    "garage-sale",
+    "curb-alert",
+    "agent-native",
+    "no-auth"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "curb.sale",
+    "shortDescription": "Local classifieds for physical things, in one unauthenticated HTTP call.",
+    "longDescription": "curb.sale is classifieds built to be used by software. Send a description, a photo, or both, and one unauthenticated POST returns a live public listing URL in seconds — no account, no API key, no signup, ever. Search the corpus geographically to find secondhand things near you, and message a seller through an accountless relay: the notification carries a relay address, so neither side learns the other's email address. Physical goods sold locally: two people meet. There is no payment, escrow, shipping or delivery. Listings expire in 30 days unless claimed, and coordinates are fuzzed to about 100 m, because a listing is someone's home.",
+    "developerName": "curb.sale",
+    "category": "Productivity",
+    "websiteURL": "https://curb.sale",
+    "privacyPolicyURL": "https://curb.sale/privacy",
+    "termsOfServiceURL": "https://curb.sale/terms",
+    "defaultPrompt": [
+      "Sell my old dresser on curb.sale — $80, I'm in Austin, TX.",
+      "Find me a used desk near Austin under $150.",
+      "Put this couch on the curb, free to whoever hauls it away."
+    ]
+  }
+}

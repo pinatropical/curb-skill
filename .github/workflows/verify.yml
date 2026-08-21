@@ -1,0 +1,73 @@
+name: verify
+
+# Two things this catches that no runtime we can drive by hand will:
+#   1. a derived file that drifted from its source — five manifests and four
+#      command prompts each exist twice, and by hand that lasted one week
+#   2. YAML frontmatter that is invalid but that every lenient parser accepts.
+#      `npx skills` is the one strict consumer, and it is the one nobody runs.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - run: pip install pyyaml
+
+      # Regenerates nothing; fails if any derived file is out of date, if a
+      # description is invalid YAML, if the README's quoted byte count is
+      # stale, or if an mcpServers key appeared while /mcp is still a 404.
+      # --online re-reads the Agent Plugins schema instead of trusting the
+      # field list baked into the script.
+      - name: derived files are in sync
+        run: python3 scripts/sync.py --check --online
+
+      # The strict parser. This is the check that was missing when the public
+      # repo spent a week answering "No skills found" to every runtime that
+      # installs through it.
+      # NB: the CLI colourises its output, so "Found 1 skill" arrives on the wire
+      # as "Found \x1b[32m1\x1b[39m skill". Grepping the raw stream matched
+      # nothing and failed three green pushes in a row — a check written to catch
+      # false negatives, producing one. Strip the escapes first.
+      - name: the skill parses strictly
+        run: |
+          raw=$(npx -y skills add "$PWD" --list 2>&1) || true
+          out=$(printf '%s' "$raw" | sed -E 's/\x1b\[[0-9;]*[mK]//g')
+          echo "$out"
+          echo "$out" | grep -qE 'Found +1 +skill' || {
+            echo "::error::skills CLI did not report exactly one skill"; exit 1; }
+          echo "$out" | grep -q 'curb-sale' || {
+            echo "::error::skills CLI found a skill, but not curb-sale"; exit 1; }
+
+      - name: curb.sh is valid shell and sends nothing on --dry-run
+        run: |
+          bash -n skills/curb-sale/scripts/curb.sh
+          skills/curb-sale/scripts/curb.sh sell --dry-run \
+            --text 'test' --location 'Austin, TX'
+
+      # Cheap, and it is how we learned the product's own two contract pages
+      # were disagreeing about the photo limit.
+      - name: the endpoints we tell people to call still answer
+        run: |
+          for path in /index.md /docs.md /agents.md /openapi.json; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "https://curb.sale$path")
+            echo "$path -> $code"
+            [ "$code" = 200 ] || { echo "::error::curb.sale$path returned $code"; exit 1; }
+          done
+          # If this ever stops being 404, an mcp.json becomes worth shipping.
+          code=$(curl -s -o /dev/null -w '%{http_code}' https://curb.sale/mcp)
+          [ "$code" = 404 ] || echo "::notice::/mcp now returns $code — revisit shipping mcp.json"

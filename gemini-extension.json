@@ -1,0 +1,5 @@
+{
+  "name": "curb-sale",
+  "version": "0.3.0",
+  "description": "Sell or give away something you own to someone nearby, find secondhand things near you, and run the listing afterwards — messages, price, sold, gone. One unauthenticated HTTP call. No account, no API key, no signup."
+}

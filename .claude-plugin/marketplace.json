@@ -1,0 +1,19 @@
+{
+  "name": "curb-sale",
+  "owner": {
+    "name": "curb.sale",
+    "url": "https://curb.sale"
+  },
+  "metadata": {
+    "description": "Agent-native services from curb.sale.",
+    "version": "0.3.0"
+  },
+  "plugins": [
+    {
+      "name": "curb-sale",
+      "description": "Sell or give away something you own to someone nearby, find secondhand things near you, and run the listing afterwards — messages, price, sold, gone. One unauthenticated HTTP call. No account, no API key, no signup.",
+      "source": "./",
+      "strict": false
+    }
+  ]
+}

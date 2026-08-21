@@ -1,0 +1,30 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "curb-sale",
+  "version": "0.3.0",
+  "description": "Sell or give away something you own to someone nearby, find secondhand things near you, and run the listing afterwards — messages, price, sold, gone. One unauthenticated HTTP call. No account, no API key, no signup.",
+  "author": {
+    "name": "curb.sale",
+    "url": "https://curb.sale"
+  },
+  "homepage": "https://curb.sale",
+  "repository": "https://github.com/curb-sale/curb-skill",
+  "license": "MIT",
+  "keywords": [
+    "classifieds",
+    "marketplace",
+    "sell",
+    "secondhand",
+    "used",
+    "free-stuff",
+    "local",
+    "nearby",
+    "local-pickup",
+    "declutter",
+    "moving",
+    "garage-sale",
+    "curb-alert",
+    "agent-native",
+    "no-auth"
+  ]
+}
